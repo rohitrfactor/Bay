@@ -46,6 +46,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public int addVehicle(Vehicle vehicle){
         // Create and/or open the database for writing
+        int status = -2;
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try{
@@ -60,9 +61,53 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(VehicleTable.COLUMN_OCP,vehicle.isOcp());
             values.put(VehicleTable.COLUMN_FEE,vehicle.getFee());
             db.insert(VehicleTable.NAME,null,values);
-            return 0;
+            db.setTransactionSuccessful();
+            status = 0;
         }
-        catch(Exception e){return -1;}
+        catch(Exception e)
+        {status = -1;}
+        finally{
+            db.endTransaction();
+            return status;}
+    }
+    public int exitVehicle(Vehicle vehicle){
+        int status = -2;
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try{
+            ContentValues values = new ContentValues();
+            values.put(VehicleTable.COLUMN_OUT_TIME,vehicle.getOutTime());
+            values.put(VehicleTable.COLUMN_OUT_IMG,vehicle.isOutImage());
+            values.put(VehicleTable.COLUMN_OCP,vehicle.isOcp());
+            values.put(VehicleTable.COLUMN_FEE,vehicle.getFee());
+            //SQL Query to update a row based on primary key
+            db.update(VehicleTable.NAME,values, VehicleTable.COLUMN_ID + " = ?",
+                    new String[] {String.valueOf(vehicle.getUid())});
+            db.setTransactionSuccessful();
+            status = 0;
+        }
+        catch (Exception e){
+            status = -1;
+        }finally{
+            db.endTransaction();
+            return status;
+        }
+    }
+    public int deleteAllData(){
+        int status = -2;
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try{
+            db.delete(VehicleTable.NAME,null,null);
+            db.setTransactionSuccessful();
+            status = 0;
+        }
+        catch (Exception e){
+            status = -1;
+        }finally{
+            db.endTransaction();
+            return status;
+        }
     }
 
 }
