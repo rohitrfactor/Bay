@@ -2,10 +2,18 @@ package com.example.garorasu.bay.Persistance;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.garorasu.bay.Model.Vehicle;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by garorasu on 3/12/16.
@@ -108,6 +116,37 @@ public class DbHelper extends SQLiteOpenHelper {
             db.endTransaction();
             return status;
         }
+    }
+    public List<Vehicle> getAllVehicles(){
+        List<Vehicle> mListVehicles = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + VehicleTable.NAME;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    Vehicle vehicle = new Vehicle(
+                            Long.parseLong(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_ID))),
+                            cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID)),
+                            Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_TIME))),
+                            Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_TIME))),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_TYPE))),
+                            Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_IMG))),
+                            Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_IMG))),
+                            Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OCP))),
+                            Double.parseDouble(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_FEE))));
+                    mListVehicles.add(vehicle);
+                } while(cursor.moveToNext());
+            }
+        }catch(Exception e){
+            Log.d(TAG, "Error while trying to get all Vehicles from database");
+        }finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return mListVehicles;
     }
 
 }

@@ -16,8 +16,22 @@ public class Vehicle {
     boolean outImg;
     boolean ocp;
     double fee;
+    public Vehicle(){};
 
-    public Vehicle(Long uid,String vid,Date inTime,int type,boolean inImg){
+    public Vehicle(Long uid,String vid,Date inTime,Date outTime,int type,boolean inImg,
+                   boolean outImg,boolean ocp,double fee){
+        this.uid = uid;
+        this.vid = vid;
+        this.inTime = inTime;
+        this.outTime = outTime;
+        this.type = type;
+        this.inImg = inImg;
+        this.outImg = outImg;
+        this.ocp = ocp;
+        this.fee = fee;
+    };
+
+    public void vehicleIn(Long uid,String vid,Date inTime,int type,boolean inImg){
         this.uid = uid;
         this.vid = vid;
         this.inTime = inTime;
