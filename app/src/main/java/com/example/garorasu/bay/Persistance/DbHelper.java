@@ -129,6 +129,11 @@ public class DbHelper extends SQLiteOpenHelper {
         return getVehicles(selectQuery);
     }
 
+    public List<Vehicle> getVehicleByVid(String vid){
+        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + "WHERE " + VehicleTable.COLUMN_VID + " = "+vid;
+        return getVehicles(selectQuery);
+    }
+
     private List<Vehicle> getVehicles(String query){
         List<Vehicle> mListVehicles = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
