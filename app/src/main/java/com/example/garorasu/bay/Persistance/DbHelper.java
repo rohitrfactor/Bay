@@ -118,29 +118,30 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
     public List<Vehicle> getAllVehicles(){
-        List<Vehicle> mListVehicles = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + VehicleTable.NAME;
+        return getVehicles(selectQuery);
+    }
+    public List<Vehicle> getParkedVehicles(){
+
+        // Select All vehicles where parking ocp boolean is true
+        String selectQuery = "SELECT  * FROM " + VehicleTable.NAME + "WHERE " + VehicleTable.COLUMN_OCP + " = 1";
+        return getVehicles(selectQuery);
+    }
+
+    private List<Vehicle> getVehicles(String query){
+        List<Vehicle> mListVehicles = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(query, null);
         try{
             if (cursor.moveToFirst()) {
                 do {
-                    Vehicle vehicle = new Vehicle(
-                            Long.parseLong(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_ID))),
-                            cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID)),
-                            Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_TIME))),
-                            Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_TIME))),
-                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_TYPE))),
-                            Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_IMG))),
-                            Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_IMG))),
-                            Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OCP))),
-                            Double.parseDouble(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_FEE))));
+                    Vehicle vehicle = vehicleFromCursor(cursor);
                     mListVehicles.add(vehicle);
                 } while(cursor.moveToNext());
             }
         }catch(Exception e){
-            Log.d(TAG, "Error while trying to get all Vehicles from database");
+            Log.d(TAG, "Error while trying to get all parked vehicles from database");
         }finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -149,4 +150,17 @@ public class DbHelper extends SQLiteOpenHelper {
         return mListVehicles;
     }
 
+    private Vehicle vehicleFromCursor(Cursor cursor){
+        Vehicle vehicle = new Vehicle(
+                Long.parseLong(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_ID))),
+                cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID)),
+                Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_TIME))),
+                Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_TIME))),
+                Integer.parseInt(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_TYPE))),
+                Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_IMG))),
+                Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_IMG))),
+                Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OCP))),
+                Double.parseDouble(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_FEE))));
+        return vehicle;
+    }
 }
