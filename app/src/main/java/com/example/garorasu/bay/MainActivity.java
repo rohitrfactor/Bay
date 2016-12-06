@@ -15,13 +15,17 @@ import android.view.MenuItem;
 
 import com.example.garorasu.bay.Fragment.Dashboard;
 import com.example.garorasu.bay.Fragment.InFragment;
+import com.example.garorasu.bay.Fragment.ListParkedVehiclesFragment;
 import com.example.garorasu.bay.Fragment.OutFragment;
+import com.example.garorasu.bay.Fragment.VehicleDetailFragment;
+import com.example.garorasu.bay.Persistance.DbHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         Dashboard.clickFragmentListener,
         InFragment.submitButtonFragmentListener ,
-        OutFragment.submitButtonFragmentListener{
+        OutFragment.submitButtonFragmentListener,
+        ListParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            DbHelper db = DbHelper.getInstance(getApplicationContext());
+            db.deleteAllData();
+            setDashboard();
             return true;
         }
 
@@ -81,9 +88,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-
+            setDashboard();
         } else if (id == R.id.nav_gallery) {
-
+            setParkedListFragment();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -113,6 +120,16 @@ public class MainActivity extends AppCompatActivity
     public void setOutFragment(){
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new OutFragment(), "SOMETAG").
+                commit();
+    }
+    public void setParkedListFragment(){
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_container_main, new ListParkedVehiclesFragment(), "SOMETAG").
+                commit();
+    }
+    public void setVehicleDetailFragment(int uid){
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_container_main, new VehicleDetailFragment().newInstance(uid), "SOMETAG").
                 commit();
     }
 }

@@ -133,7 +133,15 @@ public class DbHelper extends SQLiteOpenHelper {
             return status;
         }
     }
-
+    public Vehicle getVehicleByUid(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(VehicleTable.NAME, VehicleTable.PROJECTION, VehicleTable.COLUMN_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);
+        if(cursor!=null){
+            cursor.moveToFirst();
+        }
+        return vehicleFromCursor(cursor);
+    }
     public List<Vehicle> getAllVehicles(){
         // Select All Query
         String selectQuery = "SELECT  * FROM " + VehicleTable.NAME;
