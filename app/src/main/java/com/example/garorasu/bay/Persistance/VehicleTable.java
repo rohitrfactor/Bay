@@ -24,13 +24,13 @@ public interface VehicleTable {
             COLUMN_TYPE,COLUMN_IN_IMG,COLUMN_OUT_IMG,COLUMN_OCP,COLUMN_FEE};
 
     String CREATE = "CREATE TABLE " + NAME + "("
-            + COLUMN_ID + "LONG PRIMARY KEY, "
-            + COLUMN_VID + "TEXT NOT NULL, "
-            + COLUMN_IN_TIME + "DATETIME NOT NULL, "
-            + COLUMN_OUT_TIME + "LONG PRIMARY KEY, "
-            + COLUMN_TYPE + "INTEGER, "
-            + COLUMN_IN_IMG + "BOOLEAN NOT NULL, "
-            + COLUMN_OUT_IMG + "BOOLEAN, "
-            + COLUMN_OCP + "BOOLEAN NOT NULL, "
-            + COLUMN_FEE + "DOUBLE); ";
+            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_VID + " TEXT NOT NULL,"
+            + COLUMN_IN_TIME + " TEXT NOT NULL,"
+            + COLUMN_OUT_TIME + " TEXT,"
+            + COLUMN_TYPE + " INTEGER,"
+            + COLUMN_IN_IMG + " BOOLEAN NOT NULL,"
+            + COLUMN_OUT_IMG + " BOOLEAN,"
+            + COLUMN_OCP + " BOOLEAN NOT NULL,"
+            + COLUMN_FEE + " DOUBLE); ";
 }

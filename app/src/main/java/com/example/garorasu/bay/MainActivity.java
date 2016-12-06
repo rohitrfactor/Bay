@@ -13,8 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.garorasu.bay.Fragment.Dashboard;
+import com.example.garorasu.bay.Fragment.InFragment;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,Dashboard.inButtonFragmentListener,InFragment.submitButtonFragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +25,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        if (savedInstanceState == null) {
+        setDashboard();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -81,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -97,5 +93,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setDashboard(){
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_container_main, new Dashboard(), "SOMETAG").
+                    commit();
+
+    }
+    public void setInFragment(){
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_container_main, new InFragment(), "SOMETAG").
+                commit();
     }
 }

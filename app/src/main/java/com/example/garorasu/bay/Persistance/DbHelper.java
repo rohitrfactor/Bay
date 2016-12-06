@@ -9,9 +9,14 @@ import android.util.Log;
 
 import com.example.garorasu.bay.Model.Vehicle;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -20,14 +25,14 @@ import static android.content.ContentValues.TAG;
  */
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 10;
 
     // Database Name
     private static final String DATABASE_NAME = "carsManager";
 
     private static DbHelper sInstance;
 
-    public static synchronized DbHelper getInstance(Context context) {
+    public static synchronized  DbHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
@@ -48,8 +53,13 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         /* no-op */
+        // Drop older table if existed
+       sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + VehicleTable.NAME);
+
+        // Create tables again
+        onCreate(sqLiteDatabase);
     }
 
     public int addVehicle(Vehicle vehicle){
@@ -59,7 +69,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try{
             ContentValues values = new ContentValues();
-            values.put(VehicleTable.COLUMN_ID,vehicle.getUid());
             values.put(VehicleTable.COLUMN_VID,vehicle.getVid());
             values.put(VehicleTable.COLUMN_IN_TIME,vehicle.getInTime());
             values.put(VehicleTable.COLUMN_OUT_TIME,vehicle.getOutTime());
@@ -73,9 +82,12 @@ public class DbHelper extends SQLiteOpenHelper {
             status = 0;
         }
         catch(Exception e)
-        {status = -1;}
+        {   status = -1;
+            Log.d(TAG, "Error while adding vehicle"+e);
+        }
         finally{
             db.endTransaction();
+            db.close();
             return status;}
     }
     public int exitVehicle(Vehicle vehicle){
@@ -89,15 +101,17 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(VehicleTable.COLUMN_OCP,vehicle.isOcp());
             values.put(VehicleTable.COLUMN_FEE,vehicle.getFee());
             //SQL Query to update a row based on primary key
-            db.update(VehicleTable.NAME,values, VehicleTable.COLUMN_ID + " = ?",
-                    new String[] {String.valueOf(vehicle.getUid())});
+            //db.update(VehicleTable.NAME,values, VehicleTable.COLUMN_ID + " = ?",
+            //        new String[] {String.valueOf(vehicle.getUid())});
             db.setTransactionSuccessful();
             status = 0;
         }
         catch (Exception e){
             status = -1;
+            Log.d(TAG, "Error while vehicle exit");
         }finally{
             db.endTransaction();
+            db.close();
             return status;
         }
     }
@@ -112,8 +126,10 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         catch (Exception e){
             status = -1;
+            Log.d(TAG, "Error while deleting all data");
         }finally{
             db.endTransaction();
+            db.close();
             return status;
         }
     }
@@ -123,14 +139,13 @@ public class DbHelper extends SQLiteOpenHelper {
         return getVehicles(selectQuery);
     }
     public List<Vehicle> getParkedVehicles(){
-
         // Select All vehicles where parking ocp boolean is true
-        String selectQuery = "SELECT  * FROM " + VehicleTable.NAME + "WHERE " + VehicleTable.COLUMN_OCP + " = 1";
+        String selectQuery = "SELECT  * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_OCP + " = 1";
         return getVehicles(selectQuery);
     }
 
     public List<Vehicle> getVehicleByVid(String vid){
-        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + "WHERE " + VehicleTable.COLUMN_VID + " = "+vid;
+        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_VID + " = "+vid;
         return getVehicles(selectQuery);
     }
 
@@ -146,7 +161,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 } while(cursor.moveToNext());
             }
         }catch(Exception e){
-            Log.d(TAG, "Error while trying to get all parked vehicles from database");
+            Log.d(TAG, "Error while trying to get vehicles from database"+e);
         }finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -156,11 +171,29 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     private Vehicle vehicleFromCursor(Cursor cursor){
+        DateFormat dateFormat = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        Date inTime = null;
+        Date outTime = null;
+        if(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_TIME))!=null){
+        try {
+            inTime = dateFormat.parse(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_TIME)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.d(TAG, "Error while parsing in time date"+e);}
+        }
+        if(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_TIME))!=null){
+        try {
+            outTime = dateFormat.parse(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_TIME)));
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+            Log.d(TAG, "Error while parsing out time date"+e);}
+        }
         Vehicle vehicle = new Vehicle(
-                Long.parseLong(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_ID))),
+                Integer.parseInt(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_ID))),
                 cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID)),
-                Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_TIME))),
-                Date.valueOf(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_TIME))),
+                inTime,
+                outTime,
                 Integer.parseInt(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_TYPE))),
                 Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_IN_IMG))),
                 Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OUT_IMG))),
