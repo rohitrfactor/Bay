@@ -21,8 +21,8 @@ import java.util.List;
 
 
 public class Dashboard extends Fragment {
-    private TextView parkedCars;
-    private inButtonFragmentListener mListener;
+    private TextView parkedCars,allCars;
+    private clickFragmentListener mListener;
 
     public Dashboard() {
         // Required empty public constructor
@@ -49,9 +49,12 @@ public class Dashboard extends Fragment {
         FloatingActionButton in = (FloatingActionButton) view.findViewById(R.id.fab_in);
         FloatingActionButton out = (FloatingActionButton) view.findViewById(R.id.fab_out);
         parkedCars = (TextView) view.findViewById(R.id.parked_cars);
+        allCars = (TextView) view.findViewById(R.id.all_cars);
         DbHelper database = DbHelper.getInstance(getContext());
-        List<Vehicle> x = database.getAllVehicles();
+        List<Vehicle> x = database.getParkedVehicles();
+        List<Vehicle> y = database.getAllVehicles();
         parkedCars.setText(String.valueOf(x.size()));
+        allCars.setText(String.valueOf(y.size()));
         in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +70,7 @@ public class Dashboard extends Fragment {
             public void onClick(View view) {
                 Snackbar.make(view, "Out Button Pressed", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
+                mListener.setOutFragment();
             }
         });
         return view;
@@ -76,14 +80,15 @@ public class Dashboard extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
     }
-    public interface inButtonFragmentListener{
+    public interface clickFragmentListener{
         void setInFragment();
+        void setOutFragment();
     }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof inButtonFragmentListener) {
-            mListener = (inButtonFragmentListener) context;
+        if (context instanceof clickFragmentListener) {
+            mListener = (clickFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement inButtonFragmentListener");

@@ -101,8 +101,8 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(VehicleTable.COLUMN_OCP,vehicle.isOcp());
             values.put(VehicleTable.COLUMN_FEE,vehicle.getFee());
             //SQL Query to update a row based on primary key
-            //db.update(VehicleTable.NAME,values, VehicleTable.COLUMN_ID + " = ?",
-            //        new String[] {String.valueOf(vehicle.getUid())});
+            db.update(VehicleTable.NAME,values, VehicleTable.COLUMN_ID + " = ?",
+                    new String[] {String.valueOf(vehicle.getUid())});
             db.setTransactionSuccessful();
             status = 0;
         }
@@ -133,6 +133,7 @@ public class DbHelper extends SQLiteOpenHelper {
             return status;
         }
     }
+
     public List<Vehicle> getAllVehicles(){
         // Select All Query
         String selectQuery = "SELECT  * FROM " + VehicleTable.NAME;
@@ -140,19 +141,19 @@ public class DbHelper extends SQLiteOpenHelper {
     }
     public List<Vehicle> getParkedVehicles(){
         // Select All vehicles where parking ocp boolean is true
-        String selectQuery = "SELECT  * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_OCP + " = 1";
-        return getVehicles(selectQuery);
+        String selectQuery = "SELECT  * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_OCP + " = ?";
+        return getVehicles(selectQuery,"true");
     }
 
     public List<Vehicle> getVehicleByVid(String vid){
-        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_VID + " = "+vid;
-        return getVehicles(selectQuery);
+        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_VID + " = ?";
+        return getVehicles(selectQuery,vid);
     }
 
-    private List<Vehicle> getVehicles(String query){
+    private List<Vehicle> getVehicles(String query,String parameter){
         List<Vehicle> mListVehicles = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {parameter});
         try{
             if (cursor.moveToFirst()) {
                 do {
@@ -169,6 +170,27 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         return mListVehicles;
     }
+    private List<Vehicle> getVehicles(String query){
+        List<Vehicle> mListVehicles = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    Vehicle vehicle = vehicleFromCursor(cursor);
+                    mListVehicles.add(vehicle);
+                } while(cursor.moveToNext());
+            }
+        }catch(Exception e){
+            Log.d(TAG, "Error while trying to get vehicles from database"+e);
+        }finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return mListVehicles;
+    }
+
 
     private Vehicle vehicleFromCursor(Cursor cursor){
         DateFormat dateFormat = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
@@ -189,6 +211,7 @@ public class DbHelper extends SQLiteOpenHelper {
             e.printStackTrace();
             Log.d(TAG, "Error while parsing out time date"+e);}
         }
+        System.out.println("Occupancy of vehicle "+cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID))+" is : "+cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OCP)));
         Vehicle vehicle = new Vehicle(
                 Integer.parseInt(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_ID))),
                 cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID)),

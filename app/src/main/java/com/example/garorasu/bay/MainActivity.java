@@ -15,9 +15,13 @@ import android.view.MenuItem;
 
 import com.example.garorasu.bay.Fragment.Dashboard;
 import com.example.garorasu.bay.Fragment.InFragment;
+import com.example.garorasu.bay.Fragment.OutFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,Dashboard.inButtonFragmentListener,InFragment.submitButtonFragmentListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        Dashboard.clickFragmentListener,
+        InFragment.submitButtonFragmentListener ,
+        OutFragment.submitButtonFragmentListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,11 @@ public class MainActivity extends AppCompatActivity
     public void setInFragment(){
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new InFragment(), "SOMETAG").
+                commit();
+    }
+    public void setOutFragment(){
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_container_main, new OutFragment(), "SOMETAG").
                 commit();
     }
 }

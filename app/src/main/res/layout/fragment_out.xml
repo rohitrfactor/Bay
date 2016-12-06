@@ -4,10 +4,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.garorasu.bay.Fragment.OutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <EditText
+        android:id="@+id/out_vehicleNo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:hint="Enter Vehicle no"
+        android:maxLength="4"
+        android:inputType="number"
+        />
+    <Button
+        android:id="@+id/out_submit"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        />
 
 </FrameLayout>
