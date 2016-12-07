@@ -1,7 +1,7 @@
 package com.example.garorasu.bay.Fragment;
 
 import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,12 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.garorasu.bay.MainActivity;
+
 import com.example.garorasu.bay.Model.Vehicle;
 import com.example.garorasu.bay.Persistance.DbHelper;
 import com.example.garorasu.bay.R;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -45,7 +45,7 @@ public class Dashboard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        // Inflate the layout for this fragment
+
         FloatingActionButton in = (FloatingActionButton) view.findViewById(R.id.fab_in);
         FloatingActionButton out = (FloatingActionButton) view.findViewById(R.id.fab_out);
         parkedCars = (TextView) view.findViewById(R.id.parked_cars);

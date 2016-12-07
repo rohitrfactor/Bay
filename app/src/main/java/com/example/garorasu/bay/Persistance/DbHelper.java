@@ -163,7 +163,12 @@ public class DbHelper extends SQLiteOpenHelper {
                 + VehicleTable.COLUMN_OCP + " = ?";
         return getVehicles(selectQuery,new String[] {vid,"true"});
     }
-
+    public List<Vehicle> getVehiclesByInDate(Date from,Date to){
+        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE "
+                + VehicleTable.COLUMN_IN_TIME + " BETWEEN ? AND ?";
+        System.out.println(from.toString()+" to "+to.toString());
+        return getVehicles(selectQuery,new String[] {from.toString(),to.toString()});
+    }
     private List<Vehicle> getVehicles(String query,String[] parameter){
         List<Vehicle> mListVehicles = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -184,6 +189,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
         return mListVehicles;
     }
+
     private List<Vehicle> getVehicles(String query){
         List<Vehicle> mListVehicles = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -205,7 +211,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return mListVehicles;
     }
 
-
     private Vehicle vehicleFromCursor(Cursor cursor){
         DateFormat dateFormat = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         Date inTime = null;
@@ -225,7 +230,6 @@ public class DbHelper extends SQLiteOpenHelper {
             e.printStackTrace();
             Log.d(TAG, "Error while parsing out time date"+e);}
         }
-        System.out.println("Occupancy of vehicle "+cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID))+" is : "+cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_OCP)));
         Vehicle vehicle = new Vehicle(
                 Integer.parseInt(cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_ID))),
                 cursor.getString(cursor.getColumnIndex(VehicleTable.COLUMN_VID)),

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.garorasu.bay.Fragment.Dashboard;
+import com.example.garorasu.bay.Fragment.HistoryFragment;
 import com.example.garorasu.bay.Fragment.InFragment;
 import com.example.garorasu.bay.Fragment.ListParkedVehiclesFragment;
 import com.example.garorasu.bay.Fragment.OutFragment;
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity
         Dashboard.clickFragmentListener,
         InFragment.submitButtonFragmentListener ,
         OutFragment.submitButtonFragmentListener,
-        ListParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener{
+        ListParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener,
+        HistoryFragment.historyFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             setParkedListFragment();
         } else if (id == R.id.nav_slideshow) {
-
+            setHistoryFragment();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -130,6 +132,11 @@ public class MainActivity extends AppCompatActivity
     public void setVehicleDetailFragment(int uid){
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new VehicleDetailFragment().newInstance(uid), "SOMETAG").
+                commit();
+    }
+    public void setHistoryFragment(){
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_container_main, new HistoryFragment(), "SOMETAG").
                 commit();
     }
 }
