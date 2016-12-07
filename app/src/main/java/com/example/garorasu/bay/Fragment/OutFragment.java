@@ -11,22 +11,27 @@ import com.example.garorasu.bay.R;
 
 
 import android.content.Context;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.garorasu.bay.Model.Vehicle;
 import com.example.garorasu.bay.Persistance.DbHelper;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 
 public class OutFragment extends Fragment {
-    private EditText vehicleid;
+
     private submitButtonFragmentListener mListener;
 
+    private DbHelper database;
+    private AutoCompleteTextView vehicleid;
+    private ArrayList<String> parkedVehicles;
     public OutFragment() {
         // Required empty public constructor
     }
@@ -41,7 +46,8 @@ public class OutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup containter,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_out, containter, false);
-        vehicleid = (EditText) view.findViewById(R.id.out_vehicleNo);
+        vehicleid = (AutoCompleteTextView) view.findViewById(R.id.out_vehicleNo);
+        loadAdapter();
         Button submitButton = (Button) view.findViewById(R.id.out_submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,5 +100,14 @@ public class OutFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    public void loadAdapter(){
+        database = DbHelper.getInstance(getContext());
+        ArrayList<String> parkedVehicles = new ArrayList<String>();
+        for(Vehicle x: database.getParkedVehicles()){
+            parkedVehicles.add(x.getVid());
+        }
+        ArrayAdapter<String> adapter  = new ArrayAdapter<String>(getContext(), R.layout.number_plate_card,R.id.text_number_plate, parkedVehicles);
+        vehicleid.setAdapter(adapter);
     }
 }
