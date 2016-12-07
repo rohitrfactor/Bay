@@ -1,8 +1,7 @@
 package com.example.garorasu.bay;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.garorasu.bay.Fragment.Dashboard;
 import com.example.garorasu.bay.Fragment.HistoryFragment;
@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            setDashboard();
         }
     }
 
@@ -138,5 +139,10 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new HistoryFragment(), "SOMETAG").
                 commit();
+    }
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
+                InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 }

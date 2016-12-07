@@ -46,6 +46,7 @@ public class OutFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mListener.hideKeyboard(view);
                 vehicleOut(vehicleid.getText().toString());
             }
         });
@@ -76,6 +77,7 @@ public class OutFragment extends Fragment {
     }
     public interface submitButtonFragmentListener{
         void setDashboard();
+        void hideKeyboard(View view);
     }
     @Override
     public void onAttach(Context context) {

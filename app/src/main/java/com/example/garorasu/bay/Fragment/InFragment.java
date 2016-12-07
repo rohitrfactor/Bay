@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -41,8 +42,8 @@ public class InFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mListener.hideKeyboard(view);
                 vehicleIn(vehicleid.getText().toString());
-
             }
         });
         return view;
@@ -64,6 +65,7 @@ public class InFragment extends Fragment {
     }
     public interface submitButtonFragmentListener{
         void setDashboard();
+        void hideKeyboard(View view);
     }
     @Override
     public void onAttach(Context context) {
@@ -81,4 +83,5 @@ public class InFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 }
