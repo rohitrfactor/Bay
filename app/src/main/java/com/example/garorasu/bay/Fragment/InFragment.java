@@ -42,7 +42,7 @@ public class InFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.hideKeyboard(view);
+                mListener.hideKeyboard();
                 vehicleIn(vehicleid.getText().toString());
             }
         });
@@ -65,7 +65,7 @@ public class InFragment extends Fragment {
     }
     public interface submitButtonFragmentListener{
         void setDashboard();
-        void hideKeyboard(View view);
+        void hideKeyboard();
     }
     @Override
     public void onAttach(Context context) {

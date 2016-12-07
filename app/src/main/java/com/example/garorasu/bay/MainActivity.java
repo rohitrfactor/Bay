@@ -29,21 +29,30 @@ public class MainActivity extends AppCompatActivity
         ListParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener,
         HistoryFragment.historyFragmentInteractionListener{
 
+    private InputMethodManager inputMethodManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
         setDashboard();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+                super.onDrawerOpened(drawerView);
+                hideKeyboard();
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -97,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
             setHistoryFragment();
         } else if (id == R.id.nav_manage) {
-
+            hideKeyboard();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -140,9 +149,8 @@ public class MainActivity extends AppCompatActivity
                 replace(R.id.fragment_container_main, new HistoryFragment(), "SOMETAG").
                 commit();
     }
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
+    public void hideKeyboard() {
+        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 }
