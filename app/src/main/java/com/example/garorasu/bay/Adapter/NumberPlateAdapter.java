@@ -51,6 +51,7 @@ public class NumberPlateAdapter extends RecyclerView.Adapter<NumberPlateAdapter.
         public ViewHolder(final View itemView) {
             super(itemView);
             numberPlate = (TextView) itemView.findViewById(R.id.text_number_plate);
+            itemView.setOnClickListener(this);
         }
 
         public void onClick(View view) {

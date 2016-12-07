@@ -55,7 +55,7 @@ public class OutFragment extends Fragment {
     public void vehicleOut(String v){
         DbHelper database = DbHelper.getInstance(getContext());
         Date date = Calendar.getInstance().getTime();
-        List<Vehicle> result = database.getVehicleByVid(v);
+        List<Vehicle> result = database.getVehicleByVidForExit(v);
         if(result.size()>0){
         Vehicle vehicle = database.getVehicleByVid(v).get(0);
         vehicle.vehicleOut(date,50,false);

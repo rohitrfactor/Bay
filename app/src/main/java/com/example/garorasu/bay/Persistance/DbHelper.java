@@ -150,18 +150,24 @@ public class DbHelper extends SQLiteOpenHelper {
     public List<Vehicle> getParkedVehicles(){
         // Select All vehicles where parking ocp boolean is true
         String selectQuery = "SELECT  * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_OCP + " = ?";
-        return getVehicles(selectQuery,"true");
+        return getVehicles(selectQuery,new String[] {"true"});
     }
 
     public List<Vehicle> getVehicleByVid(String vid){
         String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_VID + " = ?";
-        return getVehicles(selectQuery,vid);
+        return getVehicles(selectQuery,new String[] {vid});
+    }
+    public List<Vehicle> getVehicleByVidForExit(String vid){
+        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE "
+                + VehicleTable.COLUMN_VID + " =  ?" + " AND "
+                + VehicleTable.COLUMN_OCP + " = ?";
+        return getVehicles(selectQuery,new String[] {vid,"true"});
     }
 
-    private List<Vehicle> getVehicles(String query,String parameter){
+    private List<Vehicle> getVehicles(String query,String[] parameter){
         List<Vehicle> mListVehicles = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, new String[] {parameter});
+        Cursor cursor = db.rawQuery(query, parameter);
         try{
             if (cursor.moveToFirst()) {
                 do {
