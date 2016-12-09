@@ -119,32 +119,38 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setDashboard(){
+            hideKeyboard();
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_container_main, new Dashboard(), "SOMETAG").
                     commit();
 
     }
     public void setInFragment(){
+        hideKeyboard();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new InFragment(), "SOMETAG").
                 commit();
     }
     public void setOutFragment(){
+        hideKeyboard();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new OutFragment(), "SOMETAG").
                 commit();
     }
     public void setParkedListFragment(){
+        hideKeyboard();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new ListParkedVehiclesFragment(), "SOMETAG").
                 commit();
     }
     public void setVehicleDetailFragment(int uid){
+        hideKeyboard();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new VehicleDetailFragment().newInstance(uid), "SOMETAG").
                 commit();
     }
     public void setHistoryFragment(){
+        hideKeyboard();
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_container_main, new HistoryFragment(), "SOMETAG").
                 commit();
