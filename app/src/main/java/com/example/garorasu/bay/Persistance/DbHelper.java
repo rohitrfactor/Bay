@@ -164,6 +164,12 @@ public class DbHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE " + VehicleTable.COLUMN_VID + " = ?";
         return getVehicles(selectQuery,new String[] {vid});
     }
+    public List<Vehicle> getParkedVehicleByVid(String vid){
+        String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE "
+                + VehicleTable.COLUMN_VID + " = ?" + " AND "
+                + VehicleTable.COLUMN_OCP + " = ?";
+        return getVehicles(selectQuery,new String[] {vid,"true"});
+    }
 
     public List<Vehicle> getVehicleByVidForExit(String vid){
         String selectQuery = "SELECT * FROM " + VehicleTable.NAME + " WHERE "

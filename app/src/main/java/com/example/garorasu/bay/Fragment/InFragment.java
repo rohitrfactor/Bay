@@ -48,7 +48,7 @@ public class InFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mListener.hideKeyboard();
-                mListener.showDialog(vehicleid.getText().toString());
+                checkDuplicate(vehicleid.getText().toString());
             }
         });
         return view;
@@ -61,6 +61,14 @@ public class InFragment extends Fragment {
         vehicle.vehicleIn(v,date,type,false);
         database.addVehicle(vehicle);
         mListener.setDashboard();
+    }
+    public void checkDuplicate(String v){
+        DbHelper database = DbHelper.getInstance(getContext());
+        if(database.getParkedVehicleByVid(v).size()>0){
+            alreadyParkedDialog(v);
+        }else{
+            mListener.showDialog(v);
+        }
     }
 
 
@@ -88,5 +96,18 @@ public class InFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    public void alreadyParkedDialog(String v){
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(v+" "+getResources().getString(R.string.already_parked))
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mListener.setDashboard();
+                    }
+                });
+        builder.setCancelable(false);
+        builder.create();
+        builder.show();
     }
 }
