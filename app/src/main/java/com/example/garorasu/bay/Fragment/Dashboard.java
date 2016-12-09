@@ -21,7 +21,7 @@ import java.util.List;
 
 
 public class Dashboard extends Fragment {
-    private TextView parkedCars,allCars;
+    private TextView parkedTwoWheeler,parkedFourWheeler,parkedVehicle,allVehicle;
     private clickFragmentListener mListener;
 
     public Dashboard() {
@@ -48,13 +48,21 @@ public class Dashboard extends Fragment {
 
         FloatingActionButton in = (FloatingActionButton) view.findViewById(R.id.fab_in);
         FloatingActionButton out = (FloatingActionButton) view.findViewById(R.id.fab_out);
-        parkedCars = (TextView) view.findViewById(R.id.parked_cars);
-        allCars = (TextView) view.findViewById(R.id.all_cars);
+
+        parkedVehicle = (TextView) view.findViewById(R.id.parked_vehicle);
+        parkedTwoWheeler = (TextView) view.findViewById(R.id.parked_two_wheeler);
+        parkedFourWheeler = (TextView) view.findViewById(R.id.parked_four_wheeler);
+        allVehicle = (TextView) view.findViewById(R.id.all_vehicle);
+
         DbHelper database = DbHelper.getInstance(getContext());
         List<Vehicle> x = database.getParkedVehicles();
         List<Vehicle> y = database.getAllVehicles();
-        parkedCars.setText(String.valueOf(x.size()));
-        allCars.setText(String.valueOf(y.size()));
+        List<Vehicle> a = database.getParkedVehiclesByType(2);
+        List<Vehicle> b = database.getParkedVehiclesByType(4);
+        parkedTwoWheeler.setText(String.valueOf(a.size()));
+        parkedFourWheeler.setText(String.valueOf(b.size()));
+        parkedVehicle.setText(String.valueOf(x.size()));
+        allVehicle.setText(String.valueOf(y.size()));
         in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
