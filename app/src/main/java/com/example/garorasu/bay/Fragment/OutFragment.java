@@ -1,8 +1,10 @@
 package com.example.garorasu.bay.Fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,17 +65,19 @@ public class OutFragment extends Fragment {
         DbHelper database = DbHelper.getInstance(getContext());
         Date date = Calendar.getInstance().getTime();
         List<Vehicle> result = database.getVehicleByVidForExit(v);
-        if(result.size()>0){
+        if(result.size()==1){
         Vehicle vehicle = result.get(0);
         vehicle.vehicleOut(date,50,false);
         database.exitVehicle(vehicle);
+        mListener.setDashboard();
+        }
+        else if(result.size()>1){
+            mulitpleVehicleFound(v);
         }
         else
         {
-            Snackbar.make(getView(), "Vehicle Not found", Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show();
+            vehicleNotFoundDialog(v);
         }
-        mListener.setDashboard();
     }
 
 
@@ -109,5 +113,31 @@ public class OutFragment extends Fragment {
         }
         ArrayAdapter<String> adapter  = new ArrayAdapter<String>(getContext(), R.layout.number_plate_card,R.id.text_number_plate, parkedVehicles);
         vehicleid.setAdapter(adapter);
+    }
+    public void vehicleNotFoundDialog(String v){
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(v+" "+getResources().getString(R.string.vehicle_not_found))
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mListener.setDashboard();
+                    }
+                });
+        builder.setCancelable(false);
+        builder.create();
+        builder.show();
+    }
+    public void mulitpleVehicleFound(String v){
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(getResources().getString(R.string.multiple_vehicle)+" "+v)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            mListener.setDashboard();
+                        }
+                    });
+            builder.setCancelable(false);
+            builder.create();
+            builder.show();
     }
 }

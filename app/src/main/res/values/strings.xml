@@ -11,5 +11,7 @@
     <string name="choose_vehicle">Choose vehicle type</string>
     <string name="already_parked">is already parked.</string>
     <string name="ok">Okay</string>
+    <string name="vehicle_not_found">vehicle not found</string>
+    <string name="multiple_vehicle">Found muliple vehicle with same registration</string>
 
 </resources>
