@@ -67,7 +67,7 @@ public class InFragment extends Fragment {
         if(database.getParkedVehicleByVid(v).size()>0){
             alreadyParkedDialog(v);
         }else{
-            mListener.showDialog(v);
+            mListener.showVehicleTypeDialog(v);
         }
     }
 
@@ -79,7 +79,7 @@ public class InFragment extends Fragment {
     public interface submitButtonFragmentListener{
         void setDashboard();
         void hideKeyboard();
-        void showDialog(String vid);
+        void showVehicleTypeDialog(String vid);
     }
     @Override
     public void onAttach(Context context) {

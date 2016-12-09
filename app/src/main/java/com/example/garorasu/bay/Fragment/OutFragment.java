@@ -63,13 +63,11 @@ public class OutFragment extends Fragment {
 
     public void vehicleOut(String v){
         DbHelper database = DbHelper.getInstance(getContext());
-        Date date = Calendar.getInstance().getTime();
         List<Vehicle> result = database.getVehicleByVidForExit(v);
         if(result.size()==1){
-        Vehicle vehicle = result.get(0);
-        vehicle.vehicleOut(date,50,false);
-        database.exitVehicle(vehicle);
-        mListener.setDashboard();
+            Vehicle vehicle = result.get(0);
+            vehicleOutConfirmationDialog(vehicle);
+            //mListener.setDashboard();
         }
         else if(result.size()>1){
             mulitpleVehicleFound(v);
@@ -88,6 +86,7 @@ public class OutFragment extends Fragment {
     public interface submitButtonFragmentListener{
         void setDashboard();
         void hideKeyboard();
+        void showVehicleOutPaymentDialog(Vehicle vehicle);
     }
     @Override
     public void onAttach(Context context) {
@@ -113,6 +112,26 @@ public class OutFragment extends Fragment {
         }
         ArrayAdapter<String> adapter  = new ArrayAdapter<String>(getContext(), R.layout.number_plate_card,R.id.text_number_plate, parkedVehicles);
         vehicleid.setAdapter(adapter);
+    }
+    public void vehicleOutConfirmationDialog(Vehicle v){
+        final Vehicle vehicle = v;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getResources().getString(R.string.vehicle_out_confirmation)+" "+vehicle.getVid())
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Date date = Calendar.getInstance().getTime();
+                        vehicle.vehicleOut(date,50,false);
+                        database.exitVehicle(vehicle);
+                        mListener.showVehicleOutPaymentDialog(vehicle);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        builder.create();
+        builder.show();
     }
     public void vehicleNotFoundDialog(String v){
         // Use the Builder class for convenient dialog construction

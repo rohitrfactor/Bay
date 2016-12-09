@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/text_dialog_payment_vehicle_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_vehicle"
+        android:textSize="35dp" />
+    <TextView
+        android:id="@+id/text_dialog_payment_vehicle_inTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_vehicle"
+        android:textSize="20dp" />
+    <TextView
+        android:id="@+id/text_dialog_payment_vehicle_outTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_vehicle"
+        android:textSize="20dp" />
+    <TextView
+        android:id="@+id/text_dialog_payment_vehicle_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_vehicle"
+        android:textSize="20dp" />
+    <TextView
+        android:id="@+id/text_dialog_payment_vehicle_fee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_vehicle"
+        android:textSize="20dp" />
+    <Button
+        android:id="@+id/button_skip_payment_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SKIP" />
+    <Button
+        android:id="@+id/button_print_payment_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Print Slip" />
+</LinearLayout>

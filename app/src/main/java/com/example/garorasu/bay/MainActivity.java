@@ -14,12 +14,14 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.garorasu.bay.Fragment.Dashboard;
+import com.example.garorasu.bay.Fragment.DialogVehicleOutFragment;
 import com.example.garorasu.bay.Fragment.DialogVehicleTypeFragment;
 import com.example.garorasu.bay.Fragment.HistoryFragment;
 import com.example.garorasu.bay.Fragment.InFragment;
 import com.example.garorasu.bay.Fragment.ListParkedVehiclesFragment;
 import com.example.garorasu.bay.Fragment.OutFragment;
 import com.example.garorasu.bay.Fragment.VehicleDetailFragment;
+import com.example.garorasu.bay.Model.Vehicle;
 import com.example.garorasu.bay.Persistance.DbHelper;
 
 public class MainActivity extends AppCompatActivity
@@ -29,7 +31,8 @@ public class MainActivity extends AppCompatActivity
         OutFragment.submitButtonFragmentListener,
         ListParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener,
         HistoryFragment.historyFragmentInteractionListener,
-        DialogVehicleTypeFragment.OnDialogVehicleTypeFragmentInteractionListener{
+        DialogVehicleTypeFragment.OnDialogVehicleTypeFragmentInteractionListener,
+        DialogVehicleOutFragment.OnDialogVehicleOutFragmentInteractionListener{
 
     private InputMethodManager inputMethodManager;
 
@@ -155,7 +158,7 @@ public class MainActivity extends AppCompatActivity
         inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
-    public void showDialog(String vid){
+    public void showVehicleTypeDialog(String vid){
         DialogVehicleTypeFragment d = new DialogVehicleTypeFragment(vid);
         d.show(getSupportFragmentManager(),"VehicleTypeDialog");
     }
@@ -163,5 +166,8 @@ public class MainActivity extends AppCompatActivity
         InFragment inFragment = (InFragment) getSupportFragmentManager().findFragmentByTag("InFragment");
         inFragment.vehicleIn(vid,type);
     }
-
+    public void showVehicleOutPaymentDialog(Vehicle vehicle){
+        DialogVehicleOutFragment d = new DialogVehicleOutFragment(vehicle);
+        d.show(getSupportFragmentManager(),"VehicleOutPaymentDialog");
+    }
 }

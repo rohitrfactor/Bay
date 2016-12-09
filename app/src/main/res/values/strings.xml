@@ -13,5 +13,7 @@
     <string name="ok">Okay</string>
     <string name="vehicle_not_found">vehicle not found</string>
     <string name="multiple_vehicle">Found muliple vehicle with same registration</string>
+    <string name="vehicle_out_confirmation">Are you sure to exit</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
