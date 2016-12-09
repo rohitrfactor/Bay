@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.garorasu.bay.Fragment.Dashboard;
+import com.example.garorasu.bay.Fragment.DialogVehicleTypeFragment;
 import com.example.garorasu.bay.Fragment.HistoryFragment;
 import com.example.garorasu.bay.Fragment.InFragment;
 import com.example.garorasu.bay.Fragment.ListParkedVehiclesFragment;
@@ -27,7 +28,8 @@ public class MainActivity extends AppCompatActivity
         InFragment.submitButtonFragmentListener ,
         OutFragment.submitButtonFragmentListener,
         ListParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener,
-        HistoryFragment.historyFragmentInteractionListener{
+        HistoryFragment.historyFragmentInteractionListener,
+        DialogVehicleTypeFragment.OnDialogVehicleTypeFragmentInteractionListener{
 
     private InputMethodManager inputMethodManager;
 
@@ -120,37 +122,46 @@ public class MainActivity extends AppCompatActivity
 
     public void setDashboard(){
             getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_container_main, new Dashboard(), "SOMETAG").
+                    replace(R.id.fragment_container_main, new Dashboard(), "Dashboard").
                     commit();
 
     }
     public void setInFragment(){
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container_main, new InFragment(), "SOMETAG").
+                replace(R.id.fragment_container_main, new InFragment(), "InFragment").
                 commit();
     }
     public void setOutFragment(){
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container_main, new OutFragment(), "SOMETAG").
+                replace(R.id.fragment_container_main, new OutFragment(), "OutFragment").
                 commit();
     }
     public void setParkedListFragment(){
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container_main, new ListParkedVehiclesFragment(), "SOMETAG").
+                replace(R.id.fragment_container_main, new ListParkedVehiclesFragment(), "ParkedVehicle").
                 commit();
     }
     public void setVehicleDetailFragment(int uid){
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container_main, new VehicleDetailFragment().newInstance(uid), "SOMETAG").
+                replace(R.id.fragment_container_main, new VehicleDetailFragment().newInstance(uid), "VehicleDetail").
                 commit();
     }
     public void setHistoryFragment(){
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container_main, new HistoryFragment(), "SOMETAG").
+                replace(R.id.fragment_container_main, new HistoryFragment(), "ParkingHistory").
                 commit();
     }
     public void hideKeyboard() {
         inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
+    public void showDialog(String vid){
+        DialogVehicleTypeFragment d = new DialogVehicleTypeFragment(vid);
+        d.show(getSupportFragmentManager(),"VehicleTypeDialog");
+    }
+    public void vehicleIn(String vid,int type){
+        InFragment inFragment = (InFragment) getSupportFragmentManager().findFragmentByTag("InFragment");
+        inFragment.vehicleIn(vid,type);
+    }
+
 }

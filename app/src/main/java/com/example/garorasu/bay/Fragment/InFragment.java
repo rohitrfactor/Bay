@@ -48,8 +48,7 @@ public class InFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mListener.hideKeyboard();
-                showDialog(vehicleid.getText().toString());
-                //vehicleIn(vehicleid.getText().toString());
+                mListener.showDialog(vehicleid.getText().toString());
             }
         });
         return view;
@@ -72,6 +71,7 @@ public class InFragment extends Fragment {
     public interface submitButtonFragmentListener{
         void setDashboard();
         void hideKeyboard();
+        void showDialog(String vid);
     }
     @Override
     public void onAttach(Context context) {
@@ -89,23 +89,4 @@ public class InFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    public void showDialog(String vid){
-        final String vehicle_id = vid;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.choose_vehicle)
-                .setItems(R.array.vehicle_array, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int type) {
-                        System.out.println("type of vehicle is "+type);
-                        if(type == 0)
-                            vehicleIn(vehicle_id,2);
-                        else if(type == 1)
-                            vehicleIn(vehicle_id,4);
-                    }
-                });
-
-        builder.create();
-        builder.setCancelable(false);
-        builder.show();
-    }
-
 }

@@ -3,5 +3,6 @@
     <string-array name="vehicle_array">
         <item>Two Wheeler</item>
         <item>Four Wheeler</item>
+        <item>Other</item>
     </string-array>
 </resources>
