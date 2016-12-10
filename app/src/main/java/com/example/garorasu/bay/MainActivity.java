@@ -100,6 +100,10 @@ public class MainActivity extends AppCompatActivity
             setDashboard();
             return true;
         }
+        if(id == R.id.action_set_fare){
+            showSetFareFragmentDialog();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

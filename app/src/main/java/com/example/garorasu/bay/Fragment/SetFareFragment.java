@@ -69,8 +69,8 @@ public class SetFareFragment extends DialogFragment {
                         Integer.parseInt(twoWheelerBaseHour.getText().toString()),
                         Integer.parseInt(twoWheelerRatePerHour.getText().toString()),
                         Integer.parseInt(fourWheelerBaseFare.getText().toString()),
-                        Integer.parseInt(twoWheelerBaseHour.getText().toString()),
-                        Integer.parseInt(twoWheelerRatePerHour.getText().toString()));
+                        Integer.parseInt(fourWheelerBaseHour.getText().toString()),
+                        Integer.parseInt(fourWheelerRatePerHour.getText().toString()));
                 PreferencesHelper.writeToPreferences(getContext(),fare);
                 dismiss();
                 mListener.setDashboard();
@@ -121,13 +121,13 @@ public class SetFareFragment extends DialogFragment {
     public void loadValues(){
         if(PreferencesHelper.isFareSet(getContext())){
             Fare fare = PreferencesHelper.getFare(getContext());
-            twoWheelerBaseFare.setText(fare.getTwoWheelerBaseFare());
-            twoWheelerBaseHour.setText(fare.getTwoWheelerBaseHour());
-            twoWheelerRatePerHour.setText(fare.getTwoWheelerRatePerHour());
+            twoWheelerBaseFare.setText(String.valueOf(fare.getTwoWheelerBaseFare()));
+            twoWheelerBaseHour.setText(String.valueOf(fare.getTwoWheelerBaseHour()));
+            twoWheelerRatePerHour.setText(String.valueOf(fare.getTwoWheelerRatePerHour()));
 
-            fourWheelerBaseFare.setText(fare.getFourWheelerBaseFare());
-            fourWheelerBaseHour.setText(fare.getFourWheelerBaseHour());
-            fourWheelerRatePerHour.setText(fare.getTwoWheelerRatePerHour());
+            fourWheelerBaseFare.setText(String.valueOf(fare.getFourWheelerBaseFare()));
+            fourWheelerBaseHour.setText(String.valueOf(fare.getFourWheelerBaseHour()));
+            fourWheelerRatePerHour.setText(String.valueOf(fare.getFourWheelerRatePerHour()));
         }
     }
     public void resetValues(){
