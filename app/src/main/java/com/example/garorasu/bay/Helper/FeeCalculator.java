@@ -16,15 +16,15 @@ public class FeeCalculator {
         int hourBetween = (int) Math.ceil((outTime.getTime()-inTime.getTime())/3600000.0);
      return hourBetween;
     }
-    public int feeCalculator(int BaseRate,int BaseHour,int RatePerHour,Date inTime,Date outTime){
+    private int feeCalculator(int BaseRate,int BaseHour,int RatePerHour,Date inTime,Date outTime){
         return (BaseRate*BaseHour)+((hourBetween(inTime,outTime)-BaseHour)*RatePerHour);
     }
-    public int twoWheelerFee(Fare f, Vehicle v,Date outTime){
+    private int twoWheelerFee(Fare f, Vehicle v,Date outTime){
         int fee = feeCalculator(f.getTwoWheelerBaseFare(),f.getTwoWheelerBaseHour(),f.getTwoWheelerRatePerHour(),
                 v.getinDate(),outTime);
         return fee;
     }
-    public int fourWheelerFee(Fare f, Vehicle v,Date outTime){
+    private int fourWheelerFee(Fare f, Vehicle v,Date outTime){
         int fee = feeCalculator(f.getFourWheelerBaseFare(),f.getFourWheelerBaseHour(),f.getFourWheelerRatePerHour(),
                 v.getinDate(),outTime);
         return fee;

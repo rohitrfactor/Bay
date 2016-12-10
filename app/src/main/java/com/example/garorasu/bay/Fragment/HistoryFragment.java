@@ -29,7 +29,7 @@ public class HistoryFragment extends Fragment{
     private NumberPlateAdapter numberPlateAdapter;
     private DbHelper database;
     private LinearLayoutManager mLayoutManager;
-    private Date to,from;
+    private Date to,from,today;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -55,9 +55,12 @@ public class HistoryFragment extends Fragment{
         mNumberPlateRecycler = (RecyclerView) view.findViewById(R.id.recycler_number_plate_history);
         database = DbHelper.getInstance(getContext());
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat tod = new SimpleDateFormat("yyyy-MM-dd");
+        today = Calendar.getInstance().getTime();
+        System.out.println("Today date is : "+tod.format(today));
         try {
-            from = fmt.parse("2016-12-07 00:00:00.000");
-            to = fmt.parse("2016-12-07 23:59:59.999");
+            from = fmt.parse(tod.format(today)+" 00:00:00.000");
+            to = fmt.parse(tod.format(today)+" 23:59:59.999");
         } catch (ParseException e) {
             e.printStackTrace();
         }

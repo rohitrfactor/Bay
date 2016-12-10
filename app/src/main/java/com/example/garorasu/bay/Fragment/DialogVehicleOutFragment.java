@@ -44,7 +44,7 @@ public class DialogVehicleOutFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_dialog_vehicle_out, container, false);
-        TextView vehicleNumber = (TextView) rootView.findViewById(R.id.text_dialog_payment_vehicle_number);
+        TextView vehicleNumber = (TextView) rootView.findViewById(R.id.text_number_plate);
         TextView vehicleInTime = (TextView) rootView.findViewById(R.id.text_dialog_payment_vehicle_inTime);
         TextView vehicleOutTime = (TextView) rootView.findViewById(R.id.text_dialog_payment_vehicle_outTime);
         TextView vehicleType = (TextView) rootView.findViewById(R.id.text_dialog_payment_vehicle_type);
