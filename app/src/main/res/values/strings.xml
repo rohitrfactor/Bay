@@ -15,5 +15,11 @@
     <string name="multiple_vehicle">Found muliple vehicle with same registration</string>
     <string name="vehicle_out_confirmation">Are you sure to exit</string>
     <string name="cancel">Cancel</string>
+    <string name="set_fare">Set Parking rates</string>
+    <string name="text_two_wheeler">Two Wheeler</string>
+    <string name="text_four_wheeler">Four Wheeler</string>
+    <string name="text_base_fare">Base Fee</string>
+    <string name="text_base_hour">Base hour duration</string>
+    <string name="text_rate_per_hour">Rate per hour</string>
 
 </resources>

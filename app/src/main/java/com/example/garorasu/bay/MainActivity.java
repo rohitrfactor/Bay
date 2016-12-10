@@ -18,9 +18,11 @@ import com.example.garorasu.bay.Fragment.DialogVehicleOutFragment;
 import com.example.garorasu.bay.Fragment.DialogVehicleTypeFragment;
 import com.example.garorasu.bay.Fragment.HistoryFragment;
 import com.example.garorasu.bay.Fragment.InFragment;
-import com.example.garorasu.bay.Fragment.ListParkedVehiclesFragment;
+import com.example.garorasu.bay.Fragment.ParkedVehiclesFragment;
 import com.example.garorasu.bay.Fragment.OutFragment;
+import com.example.garorasu.bay.Fragment.SetFareFragment;
 import com.example.garorasu.bay.Fragment.VehicleDetailFragment;
+import com.example.garorasu.bay.Helper.PreferencesHelper;
 import com.example.garorasu.bay.Model.Vehicle;
 import com.example.garorasu.bay.Persistance.DbHelper;
 
@@ -29,10 +31,11 @@ public class MainActivity extends AppCompatActivity
         Dashboard.clickFragmentListener,
         InFragment.submitButtonFragmentListener ,
         OutFragment.submitButtonFragmentListener,
-        ListParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener,
+        ParkedVehiclesFragment.listParkedVehiclesFragmentInteractionListener,
         HistoryFragment.historyFragmentInteractionListener,
         DialogVehicleTypeFragment.OnDialogVehicleTypeFragmentInteractionListener,
-        DialogVehicleOutFragment.OnDialogVehicleOutFragmentInteractionListener{
+        DialogVehicleOutFragment.OnDialogVehicleOutFragmentInteractionListener,
+        SetFareFragment.OnSetFareFragmentInteractionListener{
 
     private InputMethodManager inputMethodManager;
 
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
         setDashboard();
+        }
+        if(!PreferencesHelper.isFareSet(getApplicationContext())){
+            showSetFareFragmentDialog();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -141,7 +147,7 @@ public class MainActivity extends AppCompatActivity
     }
     public void setParkedListFragment(){
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container_main, new ListParkedVehiclesFragment(), "ParkedVehicle").
+                replace(R.id.fragment_container_main, new ParkedVehiclesFragment(), "ParkedVehicle").
                 commit();
     }
     public void setVehicleDetailFragment(int uid){
@@ -169,5 +175,9 @@ public class MainActivity extends AppCompatActivity
     public void showVehicleOutPaymentDialog(Vehicle vehicle){
         DialogVehicleOutFragment d = new DialogVehicleOutFragment(vehicle);
         d.show(getSupportFragmentManager(),"VehicleOutPaymentDialog");
+    }
+    public void showSetFareFragmentDialog(){
+        SetFareFragment setFareFragment = new SetFareFragment();
+        setFareFragment.show(getSupportFragmentManager(),"SetFareFragmentDialog");
     }
 }

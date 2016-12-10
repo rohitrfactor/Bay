@@ -70,6 +70,7 @@ public class DialogVehicleOutFragment extends DialogFragment {
                 onPrint(vid);
             }
         });
+        setCancelable(false);
         return rootView;
     }
 

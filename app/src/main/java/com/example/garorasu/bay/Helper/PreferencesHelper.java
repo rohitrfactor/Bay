@@ -27,9 +27,9 @@ public class PreferencesHelper {
         editor.putInt(TWO_WHEELER_BASE_FARE,fare.getTwoWheelerBaseFare());
         editor.putInt(TWO_WHEELER_BASE_HOUR,fare.getTwoWheelerBaseHour());
         editor.putInt(TWO_WHEELER_RATE_PER_HOUR,fare.getTwoWheelerRatePerHour());
-        editor.putInt(TWO_WHEELER_BASE_FARE,fare.getFourWheelerBaseFare());
-        editor.putInt(TWO_WHEELER_BASE_HOUR,fare.getFourWheelerBaseHour());
-        editor.putInt(TWO_WHEELER_RATE_PER_HOUR,fare.getFourWheelerRatePerHour());
+        editor.putInt(FOUR_WHEELER_BASE_FARE,fare.getFourWheelerBaseFare());
+        editor.putInt(FOUR_WHEELER_BASE_HOUR,fare.getFourWheelerBaseHour());
+        editor.putInt(FOUR_WHEELER_RATE_PER_HOUR,fare.getFourWheelerRatePerHour());
         editor.apply();
     }
     public static Fare getFare(Context context){

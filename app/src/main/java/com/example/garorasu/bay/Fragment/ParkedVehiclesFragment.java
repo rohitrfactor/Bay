@@ -15,7 +15,7 @@ import com.example.garorasu.bay.Persistance.DbHelper;
 import com.example.garorasu.bay.R;
 
 
-public class ListParkedVehiclesFragment extends Fragment{
+public class ParkedVehiclesFragment extends Fragment{
 
     private listParkedVehiclesFragmentInteractionListener mListener;
     private RecyclerView mNumberPlateRecycler;
@@ -23,13 +23,13 @@ public class ListParkedVehiclesFragment extends Fragment{
     private DbHelper database;
     private LinearLayoutManager mLayoutManager;
 
-    public ListParkedVehiclesFragment() {
+    public ParkedVehiclesFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static ListParkedVehiclesFragment newInstance() {
-        ListParkedVehiclesFragment fragment = new ListParkedVehiclesFragment();
+    public static ParkedVehiclesFragment newInstance() {
+        ParkedVehiclesFragment fragment = new ParkedVehiclesFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -43,7 +43,7 @@ public class ListParkedVehiclesFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_parked_vehicles, container, false);
+        View view = inflater.inflate(R.layout.fragment_parked_vehicles, container, false);
         mNumberPlateRecycler = (RecyclerView) view.findViewById(R.id.recycler_number_plate_parked);
         database = DbHelper.getInstance(getContext());
         numberPlateAdapter = new NumberPlateAdapter(database.getParkedVehicles());

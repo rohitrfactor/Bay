@@ -100,4 +100,6 @@ public class Vehicle {
     public String getFee(){
         return String.valueOf(fee);
     }
+    public Date getinDate() {return inTime;}
+    public Date getOutDate() {return outTime;}
 }

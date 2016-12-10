@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.garorasu.bay.Helper.FeeCalculator;
+import com.example.garorasu.bay.Helper.PreferencesHelper;
+import com.example.garorasu.bay.Model.Fare;
 import com.example.garorasu.bay.R;
 
 
@@ -115,13 +118,17 @@ public class OutFragment extends Fragment {
     }
     public void vehicleOutConfirmationDialog(Vehicle v){
         final Vehicle vehicle = v;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(getResources().getString(R.string.vehicle_out_confirmation)+" "+vehicle.getVid())
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Date date = Calendar.getInstance().getTime();
-                        vehicle.vehicleOut(date,50,false);
+                        Fare f = PreferencesHelper.getFare(getContext());
+                        FeeCalculator feeCalculator = new FeeCalculator();
+                        int vehicleFee = feeCalculator.vehicleFee(f,vehicle,date);
+                        vehicle.vehicleOut(date,vehicleFee,false);
                         database.exitVehicle(vehicle);
+                        mListener.setDashboard();
                         mListener.showVehicleOutPaymentDialog(vehicle);
                     }
                 })
@@ -135,7 +142,7 @@ public class OutFragment extends Fragment {
     }
     public void vehicleNotFoundDialog(String v){
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(v+" "+getResources().getString(R.string.vehicle_not_found))
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
